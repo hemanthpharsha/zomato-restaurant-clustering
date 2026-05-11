@@ -1,0 +1,117 @@
+import streamlit as st
+import pickle
+import numpy as np
+
+
+# Load models
+with open('kmeans_model.pkl', 'rb') as f:
+    kmeans = pickle.load(f)
+
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+
+with open('pca.pkl', 'rb') as f:
+    pca = pickle.load(f)
+
+st.title("🍽️ Restaurant Clustering App")
+
+st.subheader("Enter Restaurant Details")
+
+# ✅ 3 Inputs
+rating = st.number_input("⭐ Rating (0–5)", min_value=0.0, max_value=5.0, step=0.1)
+votes = st.number_input("🗳️ Votes", min_value=0)
+cost = st.number_input("💰 Approx Cost for Two", min_value=0)
+
+
+
+if st.button("Predict Cluster"):
+
+    data = np.array([[rating, votes, cost]])
+    data_scaled = scaler.transform(data)
+
+    
+    data_pca = pca.transform(data_scaled)
+
+    cluster = kmeans.predict(data_scaled)
+
+    # ✅ Show cluster number
+    st.subheader(f"📌 Predicted Cluster: {cluster[0]}")
+
+    # ✅ Detailed classification
+    if cluster[0] == 0:
+        st.success("💰 Budget Restaurants")
+        st.write("➡️ Low cost, moderate ratings, fewer votes")
+        st.write("➡️ Suitable for students & budget-friendly dining")
+
+    elif cluster[0] == 1:
+        st.success("⭐ Highly Rated Restaurants")
+        st.write("➡️ High ratings, good customer satisfaction")
+        st.write("➡️ Popular for quality food and service")
+
+    elif cluster[0] == 2:
+        st.success("🔥 Popular & Costly Restaurants")
+        st.write("➡️ High cost, many votes, trending places")
+        st.write("➡️ Premium restaurants with high demand")
+
+    elif cluster[0] == 3:
+        st.success("🍽️ Average Restaurants")
+        st.write("➡️ متوسط cost, average ratings and votes")
+        st.write("➡️ Normal restaurants with balanced features")import streamlit as st
+import pickle
+import numpy as np
+
+
+# Load models
+with open('kmeans_model.pkl', 'rb') as f:
+    kmeans = pickle.load(f)
+
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+
+with open('pca.pkl', 'rb') as f:
+    pca = pickle.load(f)
+
+st.title("🍽️ Restaurant Clustering App")
+
+st.subheader("Enter Restaurant Details")
+
+# ✅ 3 Inputs
+rating = st.number_input("⭐ Rating (0–5)", min_value=0.0, max_value=5.0, step=0.1)
+votes = st.number_input("🗳️ Votes", min_value=0)
+cost = st.number_input("💰 Approx Cost for Two", min_value=0)
+
+
+
+if st.button("Predict Cluster"):
+
+    data = np.array([[rating, votes, cost]])
+    data_scaled = scaler.transform(data)
+
+    
+    data_pca = pca.transform(data_scaled)
+
+    cluster = kmeans.predict(data_scaled)
+
+    # ✅ Show cluster number
+    st.subheader(f"📌 Predicted Cluster: {cluster[0]}")
+
+    # ✅ Detailed classification
+    if cluster[0] == 0:
+        st.success("💰 Budget Restaurants")
+        st.write("➡️ Low cost, moderate ratings, fewer votes")
+        st.write("➡️ Suitable for students & budget-friendly dining")
+
+    elif cluster[0] == 1:
+        st.success("⭐ Highly Rated Restaurants")
+        st.write("➡️ High ratings, good customer satisfaction")
+        st.write("➡️ Popular for quality food and service")
+
+    elif cluster[0] == 2:
+        st.success("🔥 Popular & Costly Restaurants")
+        st.write("➡️ High cost, many votes, trending places")
+        st.write("➡️ Premium restaurants with high demand")
+
+    elif cluster[0] == 3:
+        st.success("🍽️ Average Restaurants")
+        st.write("➡️ متوسط cost, average ratings and votes")
+        st.write("➡️ Normal restaurants with balanced features")
